@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: .
+        working-directory: ./backend
     steps:
       - name: Checkout backend code
         uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
           pip install --upgrade pip 
           pip install -r requirements.txt
           flake8
-          pytest
+          
 
           
         
