@@ -55,7 +55,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: backend
-          args: >
+          args:
             -Dsonar.organization=mohd-1995
             -Dsonar.organization=AWS-CICD
             -Dsonar.host.url=${{ secrets.SONAR_URL }}
