@@ -58,7 +58,7 @@ jobs:
           projectBaseDir: backend
           args:
             -Dsonar.organization=mohd-1995
-            -Dsonar.organization=-Dsonar.projectKey=mohd-1995_AWS-CICD
+            -Dsonar.projectKey=mohd-1995_AWS-CICD
             -Dsonar.host.url=${{ secrets.SONAR_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.sources=.
