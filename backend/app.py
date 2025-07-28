@@ -50,6 +50,7 @@ def submit():
                 "INSERT INTO contacts (name, email, phone, ip, user_agent) VALUES (?, ?, ?, ?, ?)",
                 (name, email, phone, user_ip, user_agent)
             )
+
             conn.commit()
         return redirect('/')
     else:
