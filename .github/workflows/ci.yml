@@ -65,6 +65,24 @@ jobs:
             -Dsonar.language=py
             -Dsonar.verbose=true
 
+  backend-security:
+    needs: backend-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+        with:
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
+      - name: Snyk Authenticate
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+      - name: Run Snyk for Python vulnerabilities
+        run: snyk test --file=requirements.txt --package-manager=pip
+        continue-on-error: true
+
 
           
         
