@@ -8,11 +8,11 @@ app = Flask(__name__)
 DEBUG_MODE = os.getenv("DEBUG_MODE", "True").lower() == "true"
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", 5000))
-DATABASE_PATH = os.getenv("DATABASE_PATH", "/data/portfolio_contacts.db")
+DATABASE_PATH = os.getenv("DATABASE_PATH", "portfolio_contacts.db")
 
 
 def init_db():
-    with sqlite3.connect('portfolio_contacts.db') as conn:
+    with sqlite3.connect(DATABASE_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS contacts (
@@ -44,13 +44,13 @@ def submit():
     user_agent = request.headers.get('User-Agent')
 
     if name and email and phone:
-        with sqlite3.connect('portfolio_contacts.db') as conn:
+        with sqlite3.connect(DATABASE_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO contacts (name, email, phone, ip, user_agent) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO contacts (name, email, phone, ip, user_agent) "
+                "VALUES (?, ?, ?, ?, ?)",
                 (name, email, phone, user_ip, user_agent)
             )
-
             conn.commit()
         return redirect('/')
     else:
