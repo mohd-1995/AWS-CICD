@@ -15,19 +15,20 @@ def init_db():
     with sqlite3.connect('portfolio_contacts.db') as conn:
         cursor = conn.cursor()
         cursor.execute('''
-                    CREATE TABLE IF NOT EXISTS contacts (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL,
-                        email TEXT NOT NULL,
-                        phone TEXT NOT NULL,
-                        ip TEXT,
-                        user_agent TEXT, 
-                        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                    )
-                ''')
+            CREATE TABLE IF NOT EXISTS contacts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT NOT NULL,
+                ip TEXT,
+                user_agent TEXT,
+                submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
         conn.commit()
 
-#render my html file.
+
+# Render the homepage
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -45,9 +46,10 @@ def submit():
     if name and email and phone:
         with sqlite3.connect('portfolio_contacts.db') as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO contacts (name, email, phone, ip, user_agent)  VALUES(?,?,?,?,?)",
-                           (name, email, phone, user_ip, user_agent))
-
+            cursor.execute(
+                "INSERT INTO contacts (name, email, phone, ip, user_agent) VALUES (?, ?, ?, ?, ?)",
+                (name, email, phone, user_ip, user_agent)
+            )
             conn.commit()
         return redirect('/')
     else:
@@ -56,6 +58,4 @@ def submit():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True, host=HOST, port=PORT)
-
-###
+    app.run(debug=DEBUG_MODE, host=HOST, port=PORT)
