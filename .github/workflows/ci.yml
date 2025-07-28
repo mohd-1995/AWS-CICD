@@ -23,7 +23,6 @@ jobs:
     steps:
       - name: Checkout frontend code
         uses: actions/checkout@v4
-
       - name: Validate HTML & CSS (Optional)
         run: echo "Static HTML/CSS site - no tests to run"
 
@@ -35,13 +34,11 @@ jobs:
     steps:
       - name: Checkout backend code
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install dependencies
+      - name: Install dependencies and test
         run: |
           python -m venv venv
           source venv/bin/activate
@@ -50,7 +47,6 @@ jobs:
           pytest
         env:
           FLASK_ENV: testing
-
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -75,15 +71,12 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
-
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
         with:
           snyk-token: ${{ secrets.SNYK_TOKEN }}
-
       - name: Snyk Authenticate
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
-
       - name: Run Snyk for Python vulnerabilities
         run: snyk test --file=requirements.txt --package-manager=pip
         continue-on-error: true
@@ -93,14 +86,12 @@ jobs:
     needs: frontend-test
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build and push frontend Docker image (mohd1995/sre:latest)
+      - name: Build and push frontend Docker image
         working-directory: ./frontend
         run: |
           docker build . -t mohd1995/sre:latest
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push mohd1995/sre:latest
-
       - name: Trivy scan for frontend image
         uses: aquasecurity/trivy-action@master
         with:
@@ -114,14 +105,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Build and push backend Docker image
         working-directory: ./backend
         run: |
           docker build . -t ${{ secrets.DOCKER_USERNAME }}/flask-backend
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push ${{ secrets.DOCKER_USERNAME }}/flask-backend
-
       - name: Trivy scan for backend image
         uses: aquasecurity/trivy-action@master
         with:
@@ -135,7 +124,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Snyk Kubernetes IaC Scan
         uses: snyk/actions/iac@master
         env:
