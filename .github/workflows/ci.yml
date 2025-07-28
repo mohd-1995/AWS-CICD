@@ -44,7 +44,26 @@ jobs:
           pip install --upgrade pip 
           pip install -r requirements.txt
           flake8
+          #pytest
           
+        env:
+          FLASK_ENV: testing
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: backend
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.sources=.
+            -Dsonar.language=py
+            -Dsonar.verbose=true
+
 
           
         
