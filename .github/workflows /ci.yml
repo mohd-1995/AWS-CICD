@@ -23,10 +23,10 @@ jobs:
     steps:
       - name: Checkout frontend code
         uses: actions/checkout@v4
-      
+
       - name: Validate HTML & CSS (Optional)
         run: echo "Static HTML/CSS site - no tests to run"
-        
+
   backend-test:
     runs-on: ubuntu-latest
     defaults:
@@ -94,17 +94,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build and push frontend Docker image
+      - name: Build and push frontend Docker image (mohd1995/sre:latest)
         working-directory: ./frontend
         run: |
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/frontend-static
+          docker build . -t mohd1995/sre:latest
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend-static
+          docker push mohd1995/sre:latest
 
       - name: Trivy scan for frontend image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/${{ secrets.DOCKER_USERNAME }}/frontend-static'
+          image-ref: 'docker.io/mohd1995/sre:latest'
           format: 'sarif'
           output: 'trivy-frontend.sarif'
           severity: 'CRITICAL,HIGH'
