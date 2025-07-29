@@ -1,63 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
-  namespace: my-sre
   labels:
     app: backend
+    app.kubernetes.io/instance: my-ingress-app
+  name: backend
+  namespace: my-sre
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 25%
-      maxSurge: 1
   selector:
     matchLabels:
-      app: backend    
+      app: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: backend
     spec:
       containers:
-      - name: backend
-        image: your-backend-image:latest
-        env:
-        - name: DATABASE_PATH
-          value: "/data/portfolio_contacts.db"
-        ports:
-        - containerPort: 5000
-        volumeMounts:
-        - name: sqlite-storage
-          mountPath: /data/portfolio_contacts.db
+        - env:
+            - name: DATABASE_PATH
+              value: /data/portfolio_contacts.db
+          image: 'your-backend-image:latest'
+          name: backend
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - mountPath: /data/portfolio_contacts.db
+              name: sqlite-storage
       volumes:
-      - name: sqlite-storage
-        claimName: sqlite-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sqlite-pvc
-  namespace: my-sre
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: ""
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-  namespace: my-sre
-spec:
-  selector:
-    app: backend
-  ports:
-  - port: 5000
-    targetPort: 5000
-    protocol: TCP
-  type: ClusterIP
+        - claimName: sqlite-pvc
+          name: sqlite-storage

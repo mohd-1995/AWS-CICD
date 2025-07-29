@@ -94,7 +94,7 @@ helm repo update
 # Install Prometheus
 helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
 
-# Install Grafana
+# Install Grafkana
 helm install grafana grafana/grafana --namespace monitoring --create-namespace
 
 # Install ingress-nginx
