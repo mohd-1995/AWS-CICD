@@ -28,4 +28,5 @@ spec:
           image: 'mohd1995/sre:latest'
           name: frontend
           ports:
+          -
             containerPort: 8080

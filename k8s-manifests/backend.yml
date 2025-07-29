@@ -22,16 +22,17 @@ spec:
         app: backend
     spec:
       containers:
-        - env:
-            - name: DATABASE_PATH
-              value: /data/portfolio_contacts.db
+        - name: backend
           image: 'your-backend-image:latest'
-          name: backend
           ports:
             - containerPort: 5000
+          env:
+            - name: DATABASE_PATH
+              value: /data/portfolio_contacts.db
           volumeMounts:
             - mountPath: /data/portfolio_contacts.db
               name: sqlite-storage
       volumes:
-        - claimName: sqlite-pvc
-          name: sqlite-storage
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: my-pvc
