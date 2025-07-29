@@ -136,6 +136,35 @@ jobs:
       run: |
         docker build . -t ${{ secrets.DOCKER_USERNAME }}/frontend-sre:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend-sre:latest
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKER_USERNAME }}/frontend-sre'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'
+    
+    - name: Install Snyk CLI
+      uses: snyk/actions/setup@master
+      env:
+        snyk-token: ${{ secrets.SNYK_TOKEN }}
+       
+    - name: Snyk Authenticate    
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+  
+    - name: Snyk Container monitor
+      run: snyk container monitor ${{ secrets.DOCKER_USERNAME }}/frontend-sre --file=Dockerfile   
+      working-directory: ./frontend
+
+    - name: Run Snyk to check for vulnerabilities in the Docker image
+      uses: snyk/actions/docker@master
+      with:
+        image: ${{ secrets.DOCKER_USERNAME }}/frontend-sre
+        args: --file=quiz-app/Dockerfile --severity-threshold=high
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      continue-on-error: true
 
 
     
