@@ -1,0 +1,30 @@
+namespace: my-sre
+
+replicaCount: 1
+
+backend:
+  image:
+    repository: your-backend-image
+    tag: latest
+  containerPort: 5000
+  env:
+    DATABASE_PATH: /data/portfolio_contacts.db
+  pvcName: my-pvc
+
+frontend:
+  image:
+    repository: mohd1995/sre
+    tag: latest
+  containerPort: 8080
+  env:
+    API_BASE_URL: http://moesportfolio.com
+
+ingress:
+  enabled: true
+  host: moesportfolio.com
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+

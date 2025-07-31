@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: frontend
+    app.kubernetes.io/instance: my-ingress-app
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.frontend.containerPort }}
+          env:
+            - name: API_BASE_URL
+              value: {{ .Values.frontend.env.API_BASE_URL }}
