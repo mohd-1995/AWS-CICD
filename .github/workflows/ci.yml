@@ -228,7 +228,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          file: ./helm-charts
+          file: ./helm-charts/templates
           args: --severity-threshold=high
     
     
