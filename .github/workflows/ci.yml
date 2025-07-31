@@ -222,14 +222,22 @@ jobs:
     needs: [backend-security, frontend-security]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+      
+      - name: Render Helm templates
+        run: |
+          helm template flask-web ./helm-charts > rendered-manifests.yaml  
       - name: Run Snyk to check Kubernetes manifest file for issues
         uses: snyk/actions/iac@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          file: ./helm-charts/templates
-          args: --severity-threshold=low
+          file: rendered-manifests.yaml
+          args: --severity-threshold=high
     
     
     
