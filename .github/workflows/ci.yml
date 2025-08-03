@@ -227,8 +227,9 @@ jobs:
       - name: Run Synk to check kubernetes manifest file for issues
         uses: snyk/actions/iac@master
         env:
-          SNYK_TOKEN: $ {{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
         with:
-          file: helm-charts/templates
+          path: helm-charts/templates
           args: --severity-threshold=high
 
