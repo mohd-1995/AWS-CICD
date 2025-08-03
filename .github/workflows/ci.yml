@@ -230,5 +230,5 @@ jobs:
           SNYK_TOKEN: $ {{ secrets.SNYK_TOKEN }}
         with:
           file: helm-charts/templates
-          args: --severity-threshold=low
+          args: --severity-threshold=high
 
