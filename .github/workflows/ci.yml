@@ -16,6 +16,7 @@ jobs:
           clean: true
 
   frontend-test:
+    needs: clean-workspace
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,6 +28,7 @@ jobs:
         run: echo "Static HTML/CSS site - no tests to run"
 
   backend-test:
+    needs: clean-workspace
     runs-on: ubuntu-latest
     defaults:
       run:
