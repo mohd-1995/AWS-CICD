@@ -30,4 +30,4 @@ spec:
       volumes:
         - name: sqlite-storage
           persistentVolumeClaim:
-            claimName: {{ .Values.backend.pvcName }}
+            claimName: "{{ .Values.backend.pvcName }}"
