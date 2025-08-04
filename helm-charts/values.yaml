@@ -4,7 +4,7 @@ replicaCount: 1
 
 backend:
   image:
-    repository: your-backend-image
+    repository: mohd1995/backend-sre:latest
     tag: latest
   containerPort: 5000
   env:
@@ -13,7 +13,7 @@ backend:
 
 frontend:
   image:
-    repository: mohd1995/sre
+    repository: mohd1995/frontend-sre
     tag: latest
   containerPort: 8080
   env:
