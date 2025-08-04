@@ -2,15 +2,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: frontend
+    app: backend
     app.kubernetes.io/instance: my-ingress-app
-  name: frontend
+  name: backend
   namespace: my-sre
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: backend
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,13 +19,20 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend
+        app: backend
     spec:
       containers:
         - env:
-            - name: API_BASE_URL
-              value: 'http://moesportfolio.com'
-          image: mohd1995/frontend-sre:latest'
-          name: frontend
+            - name: DATABASE_PATH
+              value: /data/portfolio_contacts.db
+          image: 'mohd1995/backend-sre:latest'
+          name: backend
           ports:
-          - containerPort: 8080
+            - containerPort: 5000
+          volumeMounts:
+            - mountPath: /data/portfolio_contacts.db
+              name: sqlite-storage
+      volumes:
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: my-pvc
