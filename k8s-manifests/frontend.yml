@@ -2,15 +2,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: backend
+    app: frontend
     app.kubernetes.io/instance: my-ingress-app
-  name: backend
+  name: frontend
   namespace: my-sre
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: frontend
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,14 +19,14 @@ spec:
   template:
     metadata:
       labels:
-        app: backend
+        app: frontend
     spec:
       containers:
         - env:
             - name: DATABASE_PATH
               value: /data/portfolio_contacts.db
-          image: 'mohd1995/backend-sre:latest'
-          name: backend
+          image: 'mohd1995/frontend-sre:latest'
+          name: frontend
           ports:
             - containerPort: 5000
           volumeMounts:
