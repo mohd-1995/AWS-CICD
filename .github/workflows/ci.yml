@@ -232,6 +232,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
         with:
-          path: helm-charts/templates
+          file: k8s-manifests
           args: --severity-threshold=high
 

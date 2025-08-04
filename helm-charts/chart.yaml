@@ -1,8 +1,0 @@
-spec:
-  source:
-    repoURL: 'https://github.com/mohd1995/AWS-CICD'
-    targetRevision: HEAD
-    path: my-app
-    helm:
-      valueFiles:
-        - values.yml

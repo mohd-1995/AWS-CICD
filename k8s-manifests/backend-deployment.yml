@@ -1,16 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
-  namespace: {{ .Values.namespace }}
   labels:
     app: backend
     app.kubernetes.io/instance: my-ingress-app
+  name: backend
+  namespace: my-sre
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -18,16 +23,16 @@ spec:
     spec:
       containers:
         - name: backend
-          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          image: mohd1995/backend-sre:latest
           ports:
-            - containerPort: {{ .Values.backend.containerPort }}
+            - containerPort: 5000
           env:
             - name: DATABASE_PATH
-              value: "{{ .Values.backend.env.DATABASE_PATH }}"
+              value: /data/portfolio_contacts.db
           volumeMounts:
-            - mountPath: "{{ .Values.backend.env.DATABASE_PATH }}"
+            - mountPath: /data/portfolio_contacts.db
               name: sqlite-storage
       volumes:
         - name: sqlite-storage
           persistentVolumeClaim:
-            claimName: "{{ .Values.backend.pvcName }}"
+            claimName: my-pvc

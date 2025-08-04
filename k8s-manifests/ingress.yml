@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+  labels:
+    app.kubernetes.io/instance: my-ingress-app
+  name: mylb
+  namespace: my-sre
+spec:
+  rules:
+    - host: moesportfolio.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5000
+            path: /api
+            pathType: Prefix
+          - backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
