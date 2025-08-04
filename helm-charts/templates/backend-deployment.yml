@@ -23,9 +23,9 @@ spec:
             - containerPort: {{ .Values.backend.containerPort }}
           env:
             - name: DATABASE_PATH
-              value: {{ .Values.backend.env.DATABASE_PATH }}
+              value: "{{ .Values.backend.env.DATABASE_PATH }}"
           volumeMounts:
-            - mountPath: {{ .Values.backend.env.DATABASE_PATH }}
+            - mountPath: "{{ .Values.backend.env.DATABASE_PATH }}"
               name: sqlite-storage
       volumes:
         - name: sqlite-storage
