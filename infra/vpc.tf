@@ -48,7 +48,7 @@ resource "aws_security_group" "sg1" {
   description = "Allowing Jenkins, SSH Access, SonarQube"
 
   ingress = [ 
-    for port in [22, 8080, 80, 443, 6443] : {
+    for port in [22, 8080, 80, 443, 6443, 30000] : {
       description : "TLS"
       from_port = port
       to_port = port

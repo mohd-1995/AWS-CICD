@@ -52,6 +52,7 @@ echo 'export KUBECONFIG=/home/ubuntu/.kube/config' >> /home/ubuntu/.bashrc
 sudo curl -LO "https://dl.k8s.io/release/v1.33.0/bin/linux/amd64/kubectl"
 sudo chmod +x kubectl
 sudo mv kubectl /usr/local/bin
+kubectl create namespace my-sre
 kubectl version --client
 
 
@@ -101,3 +102,5 @@ helm install grafana grafana/grafana --namespace monitoring --create-namespace
 helm install ingress-nginx ingress-nginx/ingress-nginx
 
 echo "Initialization script completed successfully."
+
+
