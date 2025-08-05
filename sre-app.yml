@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/your-username/your-repo'
+    repoURL: 'https://github.com/mohd1995/AWS-CICD'
     targetRevision: HEAD
     path: k8s
   destination:
@@ -16,3 +16,7 @@ spec:
     automated:
       selfHeal: true
       prune: true
+
+
+
+dOOBCsPS4vc9kb8C
