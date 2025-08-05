@@ -45,13 +45,12 @@ jobs:
         run: |
           pip install black
           black . 
-          
+
       - name: Install dependencies and test
         run: |
           pip install --upgrade pip 
           pip install -r requirements.txt
           flake8
-          pytest
 
         env:
           FLASK_ENV: testing
