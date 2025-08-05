@@ -11,6 +11,8 @@ PORT = int(os.getenv("PORT", 5000))
 DATABASE_PATH = os.getenv("DATABASE_PATH", "portfolio_contacts.db")
 
 def init_db():
+
+    
     os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
     with sqlite3.connect(DATABASE_PATH) as conn:
         cursor = conn.cursor()

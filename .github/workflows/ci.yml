@@ -40,6 +40,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13.5'
+      
+      - name: Autoformat code with Black
+        run: |
+          pip install black
+          black . 
+          
       - name: Install dependencies and test
         run: |
           pip install --upgrade pip 
