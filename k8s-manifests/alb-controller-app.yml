@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: alb-controller
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  source:
+    repoURL: https://aws.github.io/eks-charts
+    targetRevision: v1.7.1
+    chart: aws-load-balancer-controller
+    helm:
+      parameters:
+        - name: clusterName
+          value: my-k3s-cluster
+        - name: region
+          value: eu-west-2
+        - name: vpcId
+          value: vpc-0d0caf6511f408c38
+        - name: serviceAccount.create
+          value: "false"
+        - name: serviceAccount.name
+          value: aws-load-balancer-controller
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
